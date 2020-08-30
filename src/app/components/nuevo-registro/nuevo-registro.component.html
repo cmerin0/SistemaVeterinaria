@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title text-center">Registro de Cliente</h3>
+            </div>
+            <div class="card-body">
+                <form #myForm>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" name="nombre" class="form-control" aria-describedby="nombre" [(ngModel)]="nuevoRegistro.nombre" required>
+                        <br>
+                        <label>DUI</label>
+                        <input type="text" name="dui" class="form-control" aria-describedby="dui" [(ngModel)]="nuevoRegistro.dui" required>
+                        <br>
+                        <label>Nombre de Mascota</label>
+                        <input type="text" name="mascota" class="form-control" aria-describedby="mascota" [(ngModel)]="nuevoRegistro.mascota">
+                        <br>
+                        <label>Tratamiento</label>
+                        <select name="tratamiento" id="tratamiento" class="form-control" [(ngModel)]="nuevoRegistro.tratamiento" (change)="getCost()">
+                            <option value="0"></option>
+                            <option value="1">Baño Normal</option>
+                            <option value="2">Baño Completo</option>
+                            <option value="3">Contra Pulgas</option>
+                            <option value="4">Contra Garrapatas</option>
+                        </select>
+                        <br>
+                        <label>Medicamento</label>
+                        <select name="medicamento" id="medicamento" class="form-control" [(ngModel)]="nuevoRegistro.medicamento" (change)="getCost()">
+                            <option value="0"></option>
+                            <option value="1">Shampoo Normal</option>
+                            <option value="2">Shampoo Especial</option>
+                            <option value="3">Desparasitante</option>
+                            <option value="4">Aliviante Estomacal</option>
+                        </select>
+                        <br>
+                        <label>Costo Total</label>
+                        <label class="form-control">${{costo}}</label>
+                        <br>
+                        <button type="submit" class="btn btn-outline-primary btn-lg btn-block" (click)="registrar();">Registrar Consulta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h3 class="ml-2 mt-3">Registros</h3>
+        <table class="table table-responsive table-bordered" style="text-align: center;">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">DUI</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Mascota</th>
+                    <th scope="col"># Visita</th>
+                    <th scope="col">Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reg of misRegistros">
+                    <td>{{ reg.id }}</td>
+                    <td>{{ reg.dui }}</td>
+                    <td>{{ reg.nombre }}</td>
+                    <td>{{ reg.mascota }}</td>
+                    <td>{{ reg.visita }}</td>
+                    <td>${{ reg.costo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
