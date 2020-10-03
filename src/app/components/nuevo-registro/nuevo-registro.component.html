@@ -96,7 +96,7 @@
                         <input *ngIf="registroEncontrado" type="text" name="mascota" class="form-control" aria-describedby="mascota" [(ngModel)]="registroEncontrado.mascota">
                         <br>
                         <label>Tratamiento</label>
-                        <select *ngIf="registroEncontrado" name="tratamiento" id="tratamiento" class="form-control" [(ngModel)]="registroEncontrado.tratamiento" (change)="getCost()">
+                        <select *ngIf="registroEncontrado" name="tratamiento" id="tratamiento" class="form-control" (change)="getCost()">
                             <option value="0"></option>
                             <option value="1">Baño Normal</option>
                             <option value="2">Baño Completo</option>
@@ -105,7 +105,7 @@
                         </select>
                         <br>
                         <label>Medicamento</label>
-                        <select *ngIf="registroEncontrado" name="medicamento" id="medicamento" class="form-control" [(ngModel)]="registroEncontrado.medicamento" (change)="getCost()">
+                        <select *ngIf="registroEncontrado" name="medicamento" id="medicamento" class="form-control" (change)="getCost()">
                             <option value="0"></option>
                             <option value="1">Shampoo Normal</option>
                             <option value="2">Shampoo Especial</option>

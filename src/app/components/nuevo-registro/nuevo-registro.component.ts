@@ -55,7 +55,6 @@ export class NuevoRegistroComponent implements OnInit {
     }
 
     this.costo = this.t + this.m;
-
   }
 
   private checkDui(dui:string){
