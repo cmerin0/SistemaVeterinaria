@@ -10,6 +10,9 @@ import { exit } from 'process';
 })
 export class NuevoRegistroComponent implements OnInit {
 
+  miRegistro;
+  registroEncontrado;
+
   myId = 103;
   costo : number = 0;
   t: number = 0;
@@ -32,7 +35,6 @@ export class NuevoRegistroComponent implements OnInit {
 
   ngOnInit(): void {
     this.misRegistros = this.listadeRegistro.getRegistros();
-    console.log("Mis registros ", this.misRegistros);
   }
 
   getCost(){
@@ -75,6 +77,19 @@ export class NuevoRegistroComponent implements OnInit {
     else 
       this.off = 1
 
+  }
+
+  deleteRegistro(_id){
+    this.listadeRegistro.deleteRegistro(_id);
+  }
+
+  getPositions(_dui){
+    this.miRegistro = this.listadeRegistro.getRegistro(_dui);
+    this.registroEncontrado = this.miRegistro;
+  }
+
+  editRegistro(){
+    this.listadeRegistro.editRegistro(this.registroEncontrado);
   }
 
   registrar(){

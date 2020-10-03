@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
         <h3 class="ml-2 mt-3">Registros</h3>
         <table class="table table-responsive table-bordered" style="text-align: center;">
             <thead class="thead-dark">
@@ -55,19 +55,71 @@
                     <th scope="col">Mascota</th>
                     <th scope="col"># Visita</th>
                     <th scope="col">Costo</th>
+                    <th scope="col" colspan="2">Operaciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let reg of misRegistros">
+                <tr *ngFor="let reg of misRegistros; let i = index">
                     <td>{{ reg.id }}</td>
                     <td>{{ reg.dui }}</td>
                     <td>{{ reg.nombre }}</td>
                     <td>{{ reg.mascota }}</td>
                     <td>{{ reg.visita }}</td>
                     <td>${{ reg.costo }}</td>
+                    <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" (click)="getPositions(reg.dui)">Actualizar</button></td>
+                    <td><button type="button" class="btn btn-danger" (click)="deleteRegistro(i)">Eliminar</button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
+<div class="modal fade mt-5 pt-5" id="editModal" tabindex="-1" role="dialog" aria-label="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Actualizar Campo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input *ngIf="registroEncontrado" type="text" name="nombre" class="form-control" aria-describedby="nombre" [(ngModel)]="registroEncontrado.nombre" required>
+                        <br>
+                        <label>DUI</label>
+                        <input *ngIf="registroEncontrado" type="text" name="dui" class="form-control" aria-describedby="dui" [(ngModel)]="registroEncontrado.dui" required>
+                        <br>
+                        <label>Nombre de Mascota</label>
+                        <input *ngIf="registroEncontrado" type="text" name="mascota" class="form-control" aria-describedby="mascota" [(ngModel)]="registroEncontrado.mascota">
+                        <br>
+                        <label>Tratamiento</label>
+                        <select *ngIf="registroEncontrado" name="tratamiento" id="tratamiento" class="form-control" [(ngModel)]="registroEncontrado.tratamiento" (change)="getCost()">
+                            <option value="0"></option>
+                            <option value="1">Baño Normal</option>
+                            <option value="2">Baño Completo</option>
+                            <option value="3">Contra Pulgas</option>
+                            <option value="4">Contra Garrapatas</option>
+                        </select>
+                        <br>
+                        <label>Medicamento</label>
+                        <select *ngIf="registroEncontrado" name="medicamento" id="medicamento" class="form-control" [(ngModel)]="registroEncontrado.medicamento" (change)="getCost()">
+                            <option value="0"></option>
+                            <option value="1">Shampoo Normal</option>
+                            <option value="2">Shampoo Especial</option>
+                            <option value="3">Desparasitante</option>
+                            <option value="4">Aliviante Estomacal</option>
+                        </select>
+                        <br>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editRegistro()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>

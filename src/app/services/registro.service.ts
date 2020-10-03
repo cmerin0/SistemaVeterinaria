@@ -51,7 +51,16 @@ export class RegistroService {
 
   addRegistro(registro:Registro){
     ListadodeRegistros.push(registro);
-    console.log(ListadodeRegistros);
+  }
+
+  editRegistro(newRegistroEdit){
+    const index = ListadodeRegistros.findIndex(registro => registro.id === newRegistroEdit.id);
+    console.log("ESTE ES EL REGISTRO " + index)
+    ListadodeRegistros[index] = newRegistroEdit;
+  }
+  
+  deleteRegistro(_id){
+    ListadodeRegistros.splice(_id, 1);
   }
 
   addVisita(duiNuevo){
