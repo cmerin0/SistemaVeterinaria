@@ -43,32 +43,6 @@ export class AuthService {
       })
   }
 
-  SignUp(email, password) {
-    return this.afAuth.createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.SendVerificationMail();
-        this.SetUserData(result.user);
-      }).catch((error) => {
-        window.alert(error.message)
-      })
-  }
-
-  SendVerificationMail() {
-    return this.afAuth.currentUser.then(u => u.sendEmailVerification())
-    .then(() => {
-    this.router.navigate(['verify-email-address']);
-    })
-    }
-
-  ForgotPassword(passwordResetEmail) {
-    return this.afAuth.sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      window.alert('Password reset email sent, check your inbox.');
-    }).catch((error) => {
-      window.alert(error)
-    })
-  }
-
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null && user.emailVerified !== false) ? true : true;

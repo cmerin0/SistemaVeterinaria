@@ -13,12 +13,11 @@ export class AuthGuard implements CanActivate {
     public router: Router
   ){ }
   
-  public canActivate(
+  canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if(this.authService.isLoggedIn !== true) {
-      this.router.navigate(['login'])
-      console.log("ESTOY ENTRANDO AL LOGIN PORQUE SE SACIO LA CONDICION");
+      this.router.navigate(['login']);
     }
     return true;
   }
