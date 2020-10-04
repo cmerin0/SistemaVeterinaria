@@ -11,6 +11,15 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 
+//MODULOS FIREBASE
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
+
+import { AuthService } from "./services/auth.service";
+import { AuthGuard } from './guard/auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,9 +32,12 @@ import { HomeComponent } from './home/home.component';
     FormsModule,
     BrowserAnimationsModule,
     LayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
