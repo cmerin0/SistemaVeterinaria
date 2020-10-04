@@ -8,16 +8,16 @@
                 <form #myForm>
                     <div class="form-group">
                         <label>Nombre</label>
-                        <input type="text" name="nombre" class="form-control" aria-describedby="nombre" [(ngModel)]="nuevoRegistro.nombre" required>
+                        <input type="text" name="nombre" class="form-control" aria-describedby="nombre" [(ngModel)]="reg.nombre" required>
                         <br>
                         <label>DUI</label>
-                        <input type="text" name="dui" class="form-control" aria-describedby="dui" [(ngModel)]="nuevoRegistro.dui" required>
+                        <input type="text" name="dui" class="form-control" aria-describedby="dui" [(ngModel)]="reg.dui" required>
                         <br>
                         <label>Nombre de Mascota</label>
-                        <input type="text" name="mascota" class="form-control" aria-describedby="mascota" [(ngModel)]="nuevoRegistro.mascota">
+                        <input type="text" name="mascota" class="form-control" aria-describedby="mascota" [(ngModel)]="reg.mascota">
                         <br>
                         <label>Tratamiento</label>
-                        <select name="tratamiento" id="tratamiento" class="form-control" [(ngModel)]="nuevoRegistro.tratamiento" (change)="getCost()">
+                        <select name="tratamiento" id="tratamiento" class="form-control" [(ngModel)]="reg.tratamiento" (change)="getCost()">
                             <option value="0"></option>
                             <option value="1">Baño Normal</option>
                             <option value="2">Baño Completo</option>
@@ -26,7 +26,7 @@
                         </select>
                         <br>
                         <label>Medicamento</label>
-                        <select name="medicamento" id="medicamento" class="form-control" [(ngModel)]="nuevoRegistro.medicamento" (change)="getCost()">
+                        <select name="medicamento" id="medicamento" class="form-control" [(ngModel)]="reg.medicamento" (change)="getCost()">
                             <option value="0"></option>
                             <option value="1">Shampoo Normal</option>
                             <option value="2">Shampoo Especial</option>
@@ -36,8 +36,9 @@
                         <br>
                         <label>Costo Total</label>
                         <label class="form-control">${{costo}}</label>
-                        <br>
-                        <button type="submit" class="btn btn-outline-primary btn-lg btn-block" (click)="registrar();">Registrar Consulta</button>
+                        <br> <!-- (click)="registrar();" -->
+                        <button class="btn btn-outline-primary btn-lg btn-block" (click)="insertData()" *ngIf="reg.id == 0">Registrar Consulta</button>
+                        <button class="btn btn-outline-warning btn-lg btn-block" (click)="updateData()" *ngIf="reg.id !== 0">Modificar</button>
                     </div>
                 </form>
             </div>
@@ -46,7 +47,7 @@
 
     <div class="col-md-8">
         <h3 class="ml-2 mt-3">Registros</h3>
-        <table class="table table-responsive table-bordered" style="text-align: center;">
+        <table class="table table-responsive table-bordered" style="text-align: center;" *ngIf="ThereisData() else noData">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">ID</th>
@@ -59,21 +60,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let reg of misRegistros; let i = index">
+                <tr *ngFor="let reg of registros; let i = index">
                     <td>{{ reg.id }}</td>
                     <td>{{ reg.dui }}</td>
                     <td>{{ reg.nombre }}</td>
                     <td>{{ reg.mascota }}</td>
                     <td>{{ reg.visita }}</td>
                     <td>${{ reg.costo }}</td>
-                    <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" (click)="getPositions(reg.dui)">Actualizar</button></td>
-                    <td><button type="button" class="btn btn-danger" (click)="deleteRegistro(i)">Eliminar</button></td>
+                    <td><button (click)="getOneData(reg.id)" class="btn btn-warning">Seleccionar</button></td>
+                <!--<td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editModal" (click)="getPositions(reg.dui)">Actualizar</button></td>-->
+                    <td><button type="button" class="btn btn-danger" (click)="deleteData(reg.id)">Eliminar</button></td>
+                    <!-- (click)="deleteRegistro(i); " -->
                 </tr>
             </tbody>
         </table>
+        <ng-template #noData><p>No hay articulos.</p></ng-template>
     </div>
 </div>
 
+
+<!-- Modal Comentado Temporalmente 
 <div class="modal fade mt-5 pt-5" id="editModal" tabindex="-1" role="dialog" aria-label="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -117,9 +123,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editRegistro()">Guardar Cambios</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> (click)="editRegistro()"
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateData()">Guardar Cambios</button>
             </div>
         </div>
     </div>
-</div>
+</div>-->

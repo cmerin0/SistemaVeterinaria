@@ -1,0 +1,14 @@
+    //Asignando tratamiento
+    switch (this.reg.tratamiento) {
+      case "1": this.reg.tratamiento = "Baño Normal"; break;
+      case "2": this.reg.tratamiento = "Baño Completo"; break;
+      case "3": this.reg.tratamiento = "Contra Pulgas"; break;
+      case "4": this.reg.tratamiento = "Contra Garrapatas"; break;
+    }
+    //Asignando medicamento
+    switch (this.reg.medicamento) {
+      case "1": this.reg.medicamento = "Shampoo Normal"; break;
+      case "2": this.reg.medicamento = "Baño Completo"; break;
+      case "3": this.reg.medicamento = "Contra Pulgas"; break;
+      case "4": this.reg.medicamento = "Contra Garrapatas"; break;
+    } */

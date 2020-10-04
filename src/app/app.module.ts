@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NuevoRegistroComponent } from './components/nuevo-registro/nuevo-registro.component';
@@ -35,7 +36,8 @@ import { AuthGuard } from './guard/auth.guard';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    HttpClientModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

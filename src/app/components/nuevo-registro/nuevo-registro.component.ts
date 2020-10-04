@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistroService } from '../../services/Registro.service';
 import { Registro } from '../../models/Registro';  
+import { HttpClient } from '@angular/common/http';
 import { exit } from 'process';
 
 @Component({
@@ -10,43 +11,133 @@ import { exit } from 'process';
 })
 export class NuevoRegistroComponent implements OnInit {
 
-  miRegistro;
-  registroEncontrado;
+  registros = null;
 
-  myId = 103;
   costo : number = 0;
   t: number = 0;
   m: number = 0;
-  misRegistros : Registro[];
   off: number = 0;
+  cvisita : number = 1;
 
-  nuevoRegistro = {
+
+  reg = {
     id : 0,
     nombre : "",
     dui: "",
     mascota : "",
     tratamiento : "",
     medicamento : "",
-    costo : 0,
+    costo : this.costo,
     visita : 0
   }
 
-  constructor(private listadeRegistro : RegistroService) { }
+  constructor(private registroServicio : RegistroService) { }
 
   ngOnInit(): void {
-    this.misRegistros = this.listadeRegistro.getRegistros();
+    this.getAllData();
+  }
+
+  //FUNCIONES DE CLIENTE HTTP 
+
+  getAllData(){
+    this.registroServicio.getAllData().subscribe(result => this.registros = result);
+  }
+
+  insertData(){
+    //Validaciones de campos vacios
+    if(this.reg.nombre === "" || this.reg.dui === "" || this.reg.mascota === "")
+      exit();
+    else
+      if (this.reg.tratamiento === "" && this.reg.medicamento === "") 
+        exit();
+
+    //Chekeando el DUI si ya ha visitado antes
+    this.checkDui();
+
+    //Checkeando si aspira a descuento 
+    this.checkDescuento(this.reg.visita);
+
+    //Setenado el costo y aplicando descuento
+    this.reg.costo = this.costo * this.off;
+
+    this.registroServicio.insertData(this.reg).subscribe(datos => {
+      if (datos['resultado'] == 'ok') {
+        alert(datos['mensaje']);
+        this.getAllData();
+        this.reg = {
+          id : 0,
+          nombre : "",
+          dui: "",
+          mascota : "",
+          tratamiento : "",
+          medicamento : "",
+          costo : 0,
+          visita : 0
+        }
+        this.cvisita = 1;
+      }
+    });
+  }
+
+  deleteData(id) {
+    if (confirm('¿Esta Seguro de Eliminar el Registro?')) {
+      this.registroServicio.deleteData(id).subscribe(datos => {
+      if (datos['resultado'] == 'ok') {
+        alert(datos['mensaje']);
+        this.getAllData();
+      }
+      });
+    }
+  }
+
+  updateData(){
+
+    //Validaciones de campos vacios
+    if(this.reg.nombre === "" || this.reg.dui === "" || this.reg.mascota === "")
+      exit();
+    else
+      if (this.reg.tratamiento === "" && this.reg.medicamento === "") 
+        exit();
+
+    //Setenado el costo y aplicando descuento
+    this.reg.costo = this.costo * this.off
+
+    this.registroServicio.updateData(this.reg).subscribe(datos=> {
+      if (datos['resultado'] == 'ok') {
+        alert(datos['mensaje']);
+        this.getAllData();
+        this.reg = {
+          id : 0,
+          nombre : "",
+          dui: "",
+          mascota : "",
+          tratamiento : "",
+          medicamento : "",
+          costo : 0,
+          visita : 0
+        }
+      }
+    });
+  }
+
+  getOneData(id) {
+    this.registroServicio.getOneData(id).subscribe(result => this.reg = result[0]);
+  }
+
+  ThereisData() {
+    return true;
   }
 
   getCost(){
     
-    switch (this.nuevoRegistro.tratamiento) {
+    switch (this.reg.tratamiento) {
       case "1": this.t = 10; break;
       case "2": this.t = 20; break;
       case "3": this.t = 30; break;
       case "4": this.t = 40; break;
       default: this.t = 0; break;
     }
-    switch (this.nuevoRegistro.medicamento) {
+    switch (this.reg.medicamento) {
       case "1": this.m = 5; break;
       case "2": this.m = 10; break;
       case "3": this.m = 15; break;
@@ -57,15 +148,15 @@ export class NuevoRegistroComponent implements OnInit {
     this.costo = this.t + this.m;
   }
 
-  private checkDui(dui:string){
-    for (let registro of this.misRegistros) {
-      if(dui === registro.dui){
-        this.nuevoRegistro.visita = registro.visita + 1;
-      }
-      else{
-        this.nuevoRegistro.visita = 1;
+  private checkDui(){
+    for (let r of this.registros) {
+      alert("this.reg.dui="+this.reg.dui+" y el r.dui="+r.dui);
+      if(this.reg.dui === r.dui){
+        this.cvisita = this.cvisita + 1;
+        alert("Entro y cuento visita" + this.cvisita + " veces");
       }
     }
+    this.reg.visita = this.cvisita;
   }
 
   checkDescuento(visita:number){
@@ -75,72 +166,6 @@ export class NuevoRegistroComponent implements OnInit {
       this.off = 0.90
     else 
       this.off = 1
-
-  }
-
-  deleteRegistro(_id){
-    this.listadeRegistro.deleteRegistro(_id);
-  }
-
-  getPositions(_dui){
-    this.miRegistro = this.listadeRegistro.getRegistro(_dui);
-    this.registroEncontrado = this.miRegistro;
-  }
-
-  editRegistro(){
-    this.listadeRegistro.editRegistro(this.registroEncontrado);
-  }
-
-  registrar(){
-
-    if(this.nuevoRegistro.nombre === "" || this.nuevoRegistro.dui === "" || this.nuevoRegistro.mascota === "")
-      exit();
-    else
-      if (this.nuevoRegistro.tratamiento === "" && this.nuevoRegistro.medicamento === "") 
-        exit();
-    
-    //Seteando el ID 
-    this.nuevoRegistro.id = this.myId++;
-
-    //Chekeando el DUI si ya ha visitado antes
-    this.checkDui(this.nuevoRegistro.dui);
-
-    //Checkeando si aspira a descuento 
-    this.checkDescuento(this.nuevoRegistro.visita);
-
-    //Asignando tratamiento
-    switch (this.nuevoRegistro.tratamiento) {
-      case "1": this.nuevoRegistro.tratamiento = "Baño Normal"; break;
-      case "2": this.nuevoRegistro.tratamiento = "Baño Completo"; break;
-      case "3": this.nuevoRegistro.tratamiento = "Contra Pulgas"; break;
-      case "4": this.nuevoRegistro.tratamiento = "Contra Garrapatas"; break;
-    }
-    //Asignando medicamento
-    switch (this.nuevoRegistro.medicamento) {
-      case "1": this.nuevoRegistro.medicamento = "Shampoo Normal"; break;
-      case "2": this.nuevoRegistro.medicamento = "Baño Completo"; break;
-      case "3": this.nuevoRegistro.medicamento = "Contra Pulgas"; break;
-      case "4": this.nuevoRegistro.medicamento = "Contra Garrapatas"; break;
-    }
-
-    //Setenado el costo y aplicando descuento
-    this.nuevoRegistro.costo = this.costo * this.off; 
-
-    //Agregando nuevo registro
-    this.listadeRegistro.addRegistro(this.nuevoRegistro);
-
-    //Vaciando el nuevo registro para poder agregar otro
-    this.costo = 0;
-    this.nuevoRegistro = {
-      id : this.myId,
-      nombre : "",
-      dui: "",
-      mascota : "",
-      tratamiento : "",
-      medicamento : "",
-      costo : 0,
-      visita : 0
-    }
   }
 
 }
