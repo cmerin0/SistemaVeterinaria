@@ -25,7 +25,7 @@ export class BuscarComponent implements OnInit {
     
   }
 
-  printTicket(reg){
+  printTicket(){
     this.registrosJSON = JSON.parse(JSON.stringify(this.registros));
     printJS({
       printable: this.registrosJSON, 

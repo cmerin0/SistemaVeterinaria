@@ -150,10 +150,8 @@ export class NuevoRegistroComponent implements OnInit {
 
   private checkDui(){
     for (let r of this.registros) {
-      alert("this.reg.dui="+this.reg.dui+" y el r.dui="+r.dui);
       if(this.reg.dui === r.dui){
         this.cvisita = this.cvisita + 1;
-        alert("Entro y cuento visita" + this.cvisita + " veces");
       }
     }
     this.reg.visita = this.cvisita;
