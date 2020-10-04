@@ -22,6 +22,7 @@ import { AuthService } from "./services/auth.service";
 import { AuthGuard } from './guard/auth.guard';
 import { BuscarComponent } from './buscar/buscar.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import * as printJS from 'print-js';
 
 @NgModule({
   declarations: [
