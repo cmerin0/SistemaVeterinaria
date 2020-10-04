@@ -20,13 +20,17 @@ import { environment } from '../environments/environment';
 
 import { AuthService } from "./services/auth.service";
 import { AuthGuard } from './guard/auth.guard';
+import { BuscarComponent } from './buscar/buscar.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     NuevoRegistroComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    BuscarComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

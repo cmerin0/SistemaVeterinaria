@@ -1,0 +1,38 @@
+<!-- Search form -->
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <h3>Registros</h3>
+        <br>
+        <input class="form-control" type="text" placeholder="Buscar Por Nombre..." name="searchText" [(ngModel)]="searchText">
+        <br>
+        <table class="table table-bordered" style="text-align: center;">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">DUI</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Mascota</th>
+                    <th scope="col"># Visita</th>
+                    <th scope="col">Costo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let reg of registros | filter: searchText">
+                    <td>{{ reg.id }}</td>
+                    <td>{{ reg.dui }}</td>
+                    <td>{{ reg.nombre }}</td>
+                    <td>{{ reg.mascota }}</td>
+                    <td>{{ reg.visita }}</td>
+                    <td>${{ reg.costo }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 col-lg-2 col-sm-6">
+        <button class="btn btn-primary">Generar Ticket</button>
+    </div>
+</div>
